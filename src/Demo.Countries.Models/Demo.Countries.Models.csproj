@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Reference Include="GenericRepository.Model">
-      <HintPath>..\..\..\Projects\GenericRepository\GenericRepository.Model\bin\Debug\netcoreapp3.1\GenericRepository.Model.dll</HintPath>
+      <HintPath>..\..\..\..\Projects\GenericRepository\GenericRepository.Model\bin\Debug\netcoreapp3.1\GenericRepository.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
 

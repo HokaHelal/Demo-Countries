@@ -20,13 +20,13 @@
 
   <ItemGroup>
     <Reference Include="GenericRepository">
-      <HintPath>..\..\..\Projects\GenericRepository\GenericRepository\GenericRepository\bin\Debug\netcoreapp3.1\GenericRepository.dll</HintPath>
+      <HintPath>..\..\..\..\Projects\GenericRepository\GenericRepository\GenericRepository\bin\Debug\netcoreapp3.1\GenericRepository.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository.Core">
-      <HintPath>..\..\..\Projects\GenericRepository\GenericRepository.Core\bin\Debug\netcoreapp3.1\GenericRepository.Core.dll</HintPath>
+      <HintPath>..\..\..\..\Projects\GenericRepository\GenericRepository\GenericRepository\bin\Debug\netcoreapp3.1\GenericRepository.Core.dll</HintPath>
     </Reference>
     <Reference Include="GenericRepository.Model">
-      <HintPath>..\..\..\Projects\GenericRepository\GenericRepository\GenericRepository\bin\Debug\netcoreapp3.1\GenericRepository.Model.dll</HintPath>
+      <HintPath>..\..\..\..\Projects\GenericRepository\GenericRepository\GenericRepository\bin\Debug\netcoreapp3.1\GenericRepository.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
 
