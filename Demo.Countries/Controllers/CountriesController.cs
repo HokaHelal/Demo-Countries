@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Demo.Countries.Models;
 using Demo.Countries.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,35 +26,109 @@ namespace Demo.Countries.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Country>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _countryRepo.GetAllAsync();
+            try
+            {
+                var countryList = await _countryRepo.GetAllAsync();
+
+                return Ok(countryList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var exMsg = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                throw new System.Web.Http.HttpResponseException(exMsg);
+            }
         }
 
         [HttpPost("new")]
-        public async Task New([FromBody] Country newCountry)
+        public async Task<IActionResult> New([FromBody] Country newCountry)
         {
-            _countryRepo.Add(newCountry);
-            await _countryRepo.SaveAsync();
+            try
+            {
+                if (newCountry == null)
+                {
+                    return NotFound("New country cannot be null");
+                }
+                if (newCountry.Name == string.Empty)
+                {
+                    return BadRequest("Country name cannot be empty");
+                }
+                
+                _countryRepo.Add(newCountry);
+                await _countryRepo.SaveAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var exMsg = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                throw new System.Web.Http.HttpResponseException(exMsg);
+            }
         }
 
         [HttpPost("update")]
-        public async Task Update([FromBody] Country updatedCountry)
+        public async Task<IActionResult> Update([FromBody] Country updatedCountry)
         {
-            var dbCountry = await _countryRepo.GetById(updatedCountry.Id);
+            try
+            {
+                if (updatedCountry == null)
+                {
+                    return NotFound("New country cannot be null");
+                }
+                if (updatedCountry.Name == string.Empty)
+                {
+                    return BadRequest("Country name cannot be empty");
+                }
 
-            dbCountry.Name = updatedCountry.Name;
-            dbCountry.Code = updatedCountry.Code;
+                var dbCountry = await _countryRepo.GetById(updatedCountry.Id);
 
-            _countryRepo.Update(dbCountry);
-            await _countryRepo.SaveAsync();
+                if (dbCountry == null)
+                {
+                    return BadRequest("No country exist with following Id");
+                }
+
+                dbCountry.Name = updatedCountry.Name;
+                dbCountry.Code = updatedCountry.Code;
+
+                _countryRepo.Update(dbCountry);
+                await _countryRepo.SaveAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var exMsg = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                throw new System.Web.Http.HttpResponseException(exMsg);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _countryRepo.Delete(id);
-            await _countryRepo.SaveAsync();
+            try
+            {
+                var dbCountry = await _countryRepo.GetById(id);
+
+                if (dbCountry == null)
+                {
+                    return BadRequest("No country exist with following Id");
+                }
+
+                await _countryRepo.Delete(id);
+                await _countryRepo.SaveAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                var exMsg = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                throw new System.Web.Http.HttpResponseException(exMsg);
+            }
         }
 
     }
