@@ -10,7 +10,7 @@ ASP Core web application using entityframework code first that makes basic CRUD 
   },
 ```
 - Run application (F5) the Swagger UI should showm 
-![](api.jpg)
+![](https://github.com/HokaHelal/Demo-Countries/blob/main/api.PNG)
 
 ## Architecture Features
 1. Layers separation (Model, Repository, API) each layer is encapsulated and has their responsibility  
