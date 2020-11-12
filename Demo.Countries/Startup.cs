@@ -21,6 +21,7 @@ namespace Demo.Countries
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")), ServiceLifetime.Transient);
+            services.AddSwaggerGen();
 
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
@@ -35,6 +36,13 @@ namespace Demo.Countries
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -50,6 +58,12 @@ namespace Demo.Countries
             {
                 endpoints.MapControllers();
             });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
         }
     }
 }
